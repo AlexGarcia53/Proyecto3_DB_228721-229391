@@ -267,7 +267,10 @@ public class FrmCasting extends javax.swing.JFrame {
         if (!matcherCodigo.matches()) {
             throw new DatosCastingIncorrectosException("El código del casting contiene caracteres no válidos");
         }
-        Matcher matcherNombre = patronCodigoNombre.matcher(nombre);
+        
+        Pattern patronNombre = Pattern.compile("^([0-9A-Za-zñÑáéíóúÁÉÍÓÚ]+[ ]*){1,6}$");
+        Matcher matcherNombre = patronNombre.matcher(nombre);
+      
         if (!matcherNombre.matches()) {
             throw new DatosCastingIncorrectosException("El nombre del casting contiene caracteres no válidos");
         }
@@ -706,10 +709,11 @@ public class FrmCasting extends javax.swing.JFrame {
         Date actual = new Date(fechaActual.getTimeInMillis());
         LocalDate fechaTemporal = this.dtpFechaFase.getDate();
         GregorianCalendar fechaFase;
+        
         try {
             fechaFase = new GregorianCalendar(fechaTemporal.getYear(), (fechaTemporal.getMonthValue() - 1), fechaTemporal.getDayOfMonth(), 0, 0, 0);
         } catch (Exception e) {
-            this.mostrarError(e.getMessage());
+            this.mostrarError("Debes ingresar una fecha para poder agregar la fase");
             return;
         }
         Date fecha = new Date(fechaFase.getTimeInMillis());
